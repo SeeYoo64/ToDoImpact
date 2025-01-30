@@ -47,12 +47,29 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Добавление ролей
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+});
+
 // Добавление сервисов
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDoImpact API", Version = "v1" });
+
+});
+
+// Настройка CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("http://localhost:3000")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials()); // Разрешение использования куки и токенов
 });
 
 // Логирование
@@ -64,6 +81,7 @@ builder.Host.ConfigureLogging(logging =>
 
 var app = builder.Build();
 
+
 // Настройка конвейера запросов
 if (app.Environment.IsDevelopment())
 {
@@ -73,26 +91,29 @@ if (app.Environment.IsDevelopment())
 
 app.UseExceptionHandler(appError =>
 {
-appError.Run(async context =>
- {
-    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-    context.Response.ContentType = "application/json";
-
-    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
-    if (contextFeature != null)
+    appError.Run(async context =>
     {
-        await context.Response.WriteAsync(new ErrorDetails()
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        context.Response.ContentType = "application/json";
+
+        var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+        if (contextFeature != null)
         {
-            StatusCode = context.Response.StatusCode,
-            Message = contextFeature.Error.Message
-        }.ToString());
-    }
-});
+            await context.Response.WriteAsync(new ErrorDetails()
+            {
+                StatusCode = context.Response.StatusCode,
+                Message = contextFeature.Error.Message
+            }.ToString());
+        }
+    });
 });
 
 app.UseHttpsRedirection();
 app.UseAuthentication(); // Добавление аутентификации
 app.UseAuthorization();
+
+// Настройка CORS
+app.UseCors("AllowSpecificOrigin");
 
 app.MapControllers();
 app.Run();
