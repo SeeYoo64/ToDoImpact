@@ -10,16 +10,18 @@ function App() {
     const [token, setToken] = useState(localStorage.getItem('token') || '');
 
     return (
-        <div className="App">
+        <div className="min-h-screen bg-gray-100">
             <Navbar token={token} setToken={setToken} />
-            <Routes>
-                <Route path="/login" element={<Login setToken={setToken} />} />
-                <Route path="/register" element={<Register />} />
-                <Route
-                    path="/tasks"
-                    element={<ProtectedRoute token={token}><Tasks /></ProtectedRoute>}
-                />
-            </Routes>
+            <div className="container mx-auto p-4">
+                <Routes>
+                    <Route path="/login" element={<Login setToken={setToken} />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route
+                        path="/tasks"
+                        element={<ProtectedRoute token={token}><Tasks token={token} /></ProtectedRoute>}
+                    />
+                </Routes>
+            </div>
         </div>
     );
 }

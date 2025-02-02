@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 namespace ToDoImpact.Models;
 public class User : IdentityUser<int>
 {
+    public int Id { get; set; }
     [Required(ErrorMessage = "Username is required.")]
     [StringLength(50, ErrorMessage = "Username cannot be longer than 50 characters.")]
     public string Username { get; set; } = string.Empty;

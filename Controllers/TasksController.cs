@@ -22,14 +22,19 @@ public class TasksController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TodoTask>>> GetTasks()
     {
-        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+        if (!TryGetUserId(out var userId))
+            return Unauthorized("User ID claim is not a valid integer.");
+
+
         return await _context.Tasks.Where(t => t.UserId == userId).ToListAsync();
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<TodoTask>> GetTask(int id)
     {
-        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+        if (!TryGetUserId(out var userId))
+            return Unauthorized("User ID claim is not a valid integer.");
+
         var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
         if (task == null) return NotFound();
         return task;
@@ -38,24 +43,31 @@ public class TasksController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<TodoTask>> CreateTask(CreateTaskDto dto)
     {
-        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+        if (!TryGetUserId(out var userId))
+            return Unauthorized("User ID claim is not a valid integer.");
+
         var task = new TodoTask
         {
             Title = dto.Title,
             Description = dto.Description,
-            UserId = userId // Устанавливаем UserId текущего пользователя
+            UserId = userId
         };
 
         _context.Tasks.Add(task);
         await _context.SaveChangesAsync();
 
+        Console.WriteLine($"✅ Создана задача с ID {task.Id} для пользователя {userId}");
+
         return CreatedAtAction(nameof(GetTask), new { id = task.Id }, task);
     }
+
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTask(int id, UpdateTaskDto dto)
     {
-        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+        if (!TryGetUserId(out var userId))
+            return Unauthorized("User ID claim is not a valid integer.");
+
         var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
         if (task == null) return NotFound();
 
@@ -72,7 +84,9 @@ public class TasksController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTask(int id)
     {
-        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+        if (!TryGetUserId(out var userId))
+            return Unauthorized("User ID claim is not a valid integer.");
+
         var task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
         if (task == null) return NotFound();
 
@@ -81,4 +95,22 @@ public class TasksController : ControllerBase
 
         return NoContent();
     }
+
+
+    private bool TryGetUserId(out int userId)
+    {
+        userId = 0;
+        var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier && int.TryParse(c.Value, out _))?.Value;
+
+        if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out userId))
+        {
+            Console.WriteLine($"❌ Ошибка: Неверный UserId в токене ({userIdClaim})");
+            return false;
+        }
+
+        return true;
+    }
+
+
+
 }

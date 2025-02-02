@@ -14,14 +14,12 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         base.OnModelCreating(modelBuilder);
 
-        // Настройка первичного ключа для TodoTask
+        // Configure the relationship between User and TodoTask
         modelBuilder.Entity<TodoTask>()
-            .HasKey(t => t.Id);
-
-        // Настройка связи между User и TodoTask
-        modelBuilder.Entity<TodoTask>()
-            .HasOne(t => t.User)
-            .WithMany(u => u.Tasks)
-            .HasForeignKey(t => t.UserId);
+            .HasOne(t => t.User)             // A TodoTask has one User
+            .WithMany(u => u.Tasks)          // A User can have many TodoTasks
+            .HasForeignKey(t => t.UserId)    // The foreign key is UserId in TodoTask
+            .OnDelete(DeleteBehavior.Cascade); // You can specify the delete behavior if necessary
     }
+
 }

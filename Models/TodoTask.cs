@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using ToDoImpact.Models;
 
-namespace ToDoImpact.Models;
 public class TodoTask
 {
     public int Id { get; set; }
@@ -15,10 +15,11 @@ public class TodoTask
 
     public bool IsCompleted { get; set; }
 
-    // Внешний ключ для связи с пользователем
+    // Foreign key for User
     [Required(ErrorMessage = "UserId is required.")]
     public int UserId { get; set; }
 
-    [JsonIgnore] // Исключаем навигационное свойство из сериализации
-    public User User { get; set; } = new User();
+    // Navigation property to User
+    [JsonIgnore] // This will prevent circular references during serialization
+    public User User { get; set; } 
 }

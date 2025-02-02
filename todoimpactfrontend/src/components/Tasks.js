@@ -7,111 +7,89 @@ function Tasks({ token }) {
     const [error, setError] = useState('');
 
     useEffect(() => {
+        console.log("Отправляемый токен:", token);
         const fetchTasks = async () => {
             try {
-                const response = await axios.get(`http://localhost:5253/api/tasks/tasks`, {
+                const response = await axios.get(`http://localhost:5253/api/tasks`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
                 setTasks(response.data);
             } catch (error) {
-                console.error(error);
-                setError('Failed to fetch tasks: ' + error.message);
+                console.error("Ошибка при получении задач:", error.response?.status, error.response?.data);
+                setError(`Ошибка загрузки задач: ${error.message}`);
             }
         };
 
         fetchTasks();
     }, [token]);
 
+
     const handleCreateTask = async (e) => {
         e.preventDefault();
-        setError('');
         try {
             const response = await axios.post(`http://localhost:5253/api/tasks`, newTask, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                headers: { Authorization: `Bearer ${token}` }
             });
             setTasks([...tasks, response.data]);
             setNewTask({ title: '', description: '' });
-            alert('Task created successfully!');
         } catch (error) {
-            console.error(error);
-            setError('Failed to create task: ' + error.message);
-        }
-    };
-
-    const handleUpdateTask = async (id, updatedTask) => {
-        setError('');
-        try {
-            await axios.put(`http://localhost:5253/api/tasks/tasks/${id}`, updatedTask, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            const updatedTasks = tasks.map(task =>
-                task.id === id ? { ...task, ...updatedTask } : task
-            );
-            setTasks(updatedTasks);
-            alert('Task updated successfully!');
-        } catch (error) {
-            console.error(error);
-            setError('Failed to update task: ' + error.message);
+            setError('Ошибка создания задачи: ' + error.message);
         }
     };
 
     const handleDeleteTask = async (id) => {
-        setError('');
         try {
-            await axios.delete(`http://localhost:5253/api/tasks/tasks/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+            await axios.delete(`http://localhost:5253/api/tasks/${id}`, {
+                headers: { Authorization: `Bearer ${token}` }
             });
-            const updatedTasks = tasks.filter(task => task.id !== id);
-            setTasks(updatedTasks);
-            alert('Task deleted successfully!');
+            setTasks(tasks.filter(task => task.id !== id));
         } catch (error) {
-            console.error(error);
-            setError('Failed to delete task: ' + error.message);
+            setError('Ошибка удаления задачи: ' + error.message);
         }
     };
 
     return (
-        <div>
-            <h2>Tasks</h2>
-            {error && <div style={{ color: 'red' }}>{error}</div>}
-            <form onSubmit={handleCreateTask}>
-                <div>
-                    <label>Title:</label>
+        <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg">
+            <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Задачи</h2>
+            {error && <div className="mb-4 p-3 text-red-700 bg-red-200 rounded-md">{error}</div>}
+            <form onSubmit={handleCreateTask} className="mb-6">
+                <div className="mb-4">
                     <input
                         type="text"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                        placeholder="Название задачи"
                         value={newTask.title}
                         onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
                         required
                     />
                 </div>
-                <div>
-                    <label>Description:</label>
+                <div className="mb-4">
                     <textarea
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                        placeholder="Описание задачи"
                         value={newTask.description}
                         onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
                         required
                     />
                 </div>
-                <button type="submit">Create Task</button>
+                <button
+                    type="submit"
+                    className="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-300">
+                    Создать задачу
+                </button>
             </form>
             <ul>
                 {tasks.map(task => (
-                    <li key={task.id}>
-                        <h3>{task.title}</h3>
-                        <p>{task.description}</p>
-                        <p>{task.isCompleted ? 'Completed' : 'Pending'}</p>
-                        <button onClick={() => handleUpdateTask(task.id, { ...task, isCompleted: !task.isCompleted })}>
-                            {task.isCompleted ? 'Mark as Pending' : 'Mark as Completed'}
+                    <li key={task.id} className="p-4 bg-gray-100 rounded-lg shadow mb-4">
+                        <h3 className="text-lg font-semibold text-gray-800">{task.title}</h3>
+                        <p className="text-gray-600">{task.description}</p>
+                        <button
+                            onClick={() => handleDeleteTask(task.id)}
+                            className="mt-2 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300">
+                            Удалить
                         </button>
-                        <button onClick={() => handleDeleteTask(task.id)}>Delete</button>
                     </li>
                 ))}
             </ul>
