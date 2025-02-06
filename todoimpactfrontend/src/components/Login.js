@@ -1,6 +1,8 @@
-﻿import React, { useState } from 'react';
+﻿// src/Login.js
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './css/Login.css'; // Импортируем файл со стилями
 
 function Login({ setToken }) {
     const [email, setEmail] = useState('');
@@ -26,36 +28,34 @@ function Login({ setToken }) {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-100">
-            <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-md">
-                <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Вход</h2>
-                {error && <div className="mb-4 p-2 text-red-600 bg-red-100 rounded-md">{error}</div>}
+        <div className="login-container">
+            <div className="login-card">
+                <h2 className="login-title">Вход</h2>
+                {error && <div className="error-message">{error}</div>}
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label className="block text-gray-600 text-sm font-medium mb-1">Email:</label>
+                    <div className="form-group">
+                        <label htmlFor="email" className="label">Email:</label>
                         <input
                             type="email"
-                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400"
+                            id="email"
+                            className="input"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-600 text-sm font-medium mb-1">Пароль:</label>
+                    <div className="form-group">
+                        <label htmlFor="password" className="label">Пароль:</label>
                         <input
                             type="password"
-                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400"
+                            id="password"
+                            className="input"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
                     </div>
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">
-                        Войти
-                    </button>
+                    <button type="submit" className="button">Войти</button>
                 </form>
             </div>
         </div>

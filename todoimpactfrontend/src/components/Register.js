@@ -1,12 +1,13 @@
-﻿import React, { useState } from 'react';
+﻿// src/Register.js
+import React, { useState } from 'react';
 import axios from 'axios';
+import './css/Register.css'; // Импортируем файл со стилями
+
 function Register() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,39 +30,54 @@ function Register() {
     };
 
     return (
-        <div>
-            <h2>Register</h2>
-            {error && <div style={{ color: 'red' }}>{error}</div>}
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Username:</label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Register</button>
-            </form>
+        <div className="register-container">
+            <div className="register-card">
+                <h2 className="register-title">Регистрация</h2>
+                {error && <div className="error-message">{error}</div>}
+                <form onSubmit={handleSubmit} className="task-form">
+
+
+                    <div className="form-group">
+                        <label htmlFor="email" className="label">Имя пользователя:</label>
+                        <input
+                            type="username"
+                            id="username"
+                            className="input"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="email" className="label">Email:</label>
+                        <input
+                            type="email"
+                            id="email"
+                            className="input"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password" className="label">Пароль:</label>
+                        <input
+                            type="password"
+                            id="password"
+                            className="input"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+
+
+
+
+                    <button type="submit" className="task-create-button">Зарегистрироваться</button>
+                </form>
+            </div>
         </div>
     );
 }

@@ -1,0 +1,49 @@
+﻿/* css/Navbar.css */
+
+.navbar {
+    background-color: var(--background-color);
+    padding: 10px 20px;
+}
+
+.navbar-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-item {
+    margin: 0 15px;
+}
+
+.navbar-link {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+    .navbar-link:hover {
+        color: var(--input-focus-ring-color);
+    }
+
+.navbar-button {
+    background-color: var(--delete-button-background-color);
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+.switch {
+    background-color: var(--switch-theme-button);
+    color: var(--switch-theme-button-text);
+}
+
+    .navbar-button:hover {
+        background-color: var(--delete-button-hover-background-color);
+    }

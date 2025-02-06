@@ -1,0 +1,43 @@
+﻿/* css/theme.css */
+
+[data-theme="dark"] {
+    --background-color: #f7fafc;
+    --card-background-color: #ffffff;
+    --text-color: #374151;
+    --input-border-color: #d1d5db;
+    --input-focus-ring-color: #60a5fa;
+    --button-background-color: #3b82f6;
+    --button-hover-background-color: #2563eb;
+    --error-background-color: #fef2f2;
+    --error-text-color: #b91c1c;
+    --delete-button-background-color: #ef4444;
+    --delete-button-hover-background-color: #dc2626;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --switch-theme-button: #1a202c;
+    --switch-theme-button-text: #f7fafc;
+}
+
+:root {
+    --background-color: #1a202c;
+    --card-background-color: #2d3748;
+    --text-color: #edf2f7;
+    --input-border-color: #4a5568;
+    --input-focus-ring-color: #6574cd;
+    --button-background-color: #4299e1;
+    --button-hover-background-color: #2b6cb0;
+    --error-background-color: #4a5568;
+    --error-text-color: #f87171;
+    --delete-button-background-color: #e53e3e;
+    --delete-button-hover-background-color: #c53030;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --switch-theme-button: #f7fafc;
+    --switch-theme-button-text: #1a202c;
+}
+
+.app-container {
+    min-height: 100vh;
+    background-color: var(--background-color);
+    padding: 2rem;
+    box-sizing: border-box; /* Учитываем padding в общую ширину */
+}
+

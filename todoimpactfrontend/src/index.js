@@ -1,19 +1,12 @@
+// src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client'; // Обратите внимание на изменение импорта
-import './index.css';
+import './components/css/theme.css'; // Подключаем файл с темами
 import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter as Router } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <Router>
-            <App />
-        </Router>
+        <App />
     </React.StrictMode>
 );
-
-reportWebVitals((perf) => {
-    console.log(perf);
-});

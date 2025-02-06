@@ -1,28 +1,28 @@
+// src/App.js
 import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Register from './components/Register';
 import Tasks from './components/Tasks';
-import ProtectedRoute from './components/ProtectedRoute';
-import Navbar from './components/Navbar';
+import { ThemeProvider } from './ThemeContext';
 
 function App() {
     const [token, setToken] = useState(localStorage.getItem('token') || '');
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <Navbar token={token} setToken={setToken} />
-            <div className="container mx-auto p-4">
-                <Routes>
-                    <Route path="/login" element={<Login setToken={setToken} />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route
-                        path="/tasks"
-                        element={<ProtectedRoute token={token}><Tasks token={token} /></ProtectedRoute>}
-                    />
-                </Routes>
-            </div>
-        </div>
+        <ThemeProvider>
+            <Router>
+                <div className="app-container">
+                    <Navbar token={token} setToken={setToken} />
+                    <Routes>
+                        <Route path="/login" element={<Login setToken={setToken} />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/tasks" element={<Tasks token={token} />} />
+                    </Routes>
+                </div>
+            </Router>
+        </ThemeProvider>
     );
 }
 
