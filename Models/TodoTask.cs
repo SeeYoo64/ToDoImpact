@@ -14,6 +14,8 @@ public class TodoTask
     public string Description { get; set; } = string.Empty;
 
     public bool IsCompleted { get; set; }
+    public DateTime? CompletedAt { get; set; }
+    public bool IsArchived { get; set; }
 
     // Foreign key for User
     [Required(ErrorMessage = "UserId is required.")]
@@ -21,5 +23,5 @@ public class TodoTask
 
     // Navigation property to User
     [JsonIgnore] // This will prevent circular references during serialization
-    public User User { get; set; } 
+    public User User { get; set; }
 }

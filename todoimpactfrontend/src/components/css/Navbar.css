@@ -19,15 +19,22 @@
 }
 
 .navbar-link {
-    color: var(--text-color);
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s ease;
+    display: inline-block;
+    padding: 10px 20px; 
+    margin: 5px; 
+    color: #ffffff;
+    background-color: #007bff; 
+    text-decoration: none; 
+    border-radius: 5px; 
+    transition: background-color 0.3s ease; 
+    cursor: pointer; 
 }
 
     .navbar-link:hover {
+        background-color: #0056b3;
         color: var(--input-focus-ring-color);
     }
+
 
 .navbar-button {
     background-color: var(--delete-button-background-color);

@@ -20,6 +20,15 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
             .WithMany(u => u.Tasks)          // A User can have many TodoTasks
             .HasForeignKey(t => t.UserId)    // The foreign key is UserId in TodoTask
             .OnDelete(DeleteBehavior.Cascade); // You can specify the delete behavior if necessary
+
+        // Настройка Jsonb для массивов
+        modelBuilder.Entity<User>()
+            .Property(u => u.Achievements)
+            .HasColumnType("jsonb");
+
+        modelBuilder.Entity<User>()
+            .Property(u => u.TasksCompleted)
+            .HasColumnType("jsonb");
     }
 
 }

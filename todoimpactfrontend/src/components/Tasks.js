@@ -1,5 +1,4 @@
-﻿// src/Tasks.js
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './css/Tasks.css'; // Импортируем файл со стилями
 
@@ -8,21 +7,21 @@ function Tasks({ token }) {
     const [newTask, setNewTask] = useState({ title: '', description: '' });
     const [error, setError] = useState('');
 
+    const fetchTasks = async () => {
+        try {
+            const response = await axios.get(`http://localhost:5253/api/tasks`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setTasks(response.data);
+        } catch (error) {
+            console.error("Ошибка при получении задач:", error.response?.status, error.response?.data);
+            setError(`Ошибка загрузки задач: ${error.message}`);
+        }
+    };
+
     useEffect(() => {
-        console.log("Отправляемый токен:", token);
-        const fetchTasks = async () => {
-            try {
-                const response = await axios.get(`http://localhost:5253/api/tasks`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setTasks(response.data);
-            } catch (error) {
-                console.error("Ошибка при получении задач:", error.response?.status, error.response?.data);
-                setError(`Ошибка загрузки задач: ${error.message}`);
-            }
-        };
         fetchTasks();
     }, [token]);
 
@@ -47,6 +46,18 @@ function Tasks({ token }) {
             setTasks(tasks.filter(task => task.id !== id));
         } catch (error) {
             setError('Ошибка удаления задачи: ' + error.message);
+        }
+    };
+
+    const handleCompleteTask = async (id) => {
+        try {
+            await axios.post(`http://localhost:5253/api/tasks/${id}/complete`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            fetchTasks(); // Перезагружаем список задач
+        } catch (error) {
+            console.error('Ошибка при выполнении задачи:', error);
+            setError('Ошибка выполнения задачи: ' + error.message);
         }
     };
 
@@ -81,13 +92,18 @@ function Tasks({ token }) {
             <div className="task-list-container">
                 <h2 className="tasks-title">Список задач</h2>
                 <ul className="task-list">
-                    {tasks.map(task => (
-                        <li key={task.id} className="task-item">
-                            <h3 className="task-title">{task.title}</h3>
-                            <p className="task-description">{task.description}</p>
-                            <button onClick={() => handleDeleteTask(task.id)} className="task-delete-button">Удалить</button>
-                        </li>
-                    ))}
+                    {tasks
+                        .filter(task => !task.isCompleted) // Фильтруем невыполненные задачи
+                        .map(task => (
+                            <li key={task.id} className="task-item">
+                                <h3 className="task-title">{task.title}</h3>
+                                <p className="task-description">{task.description}</p>
+                                <div className="task-buttons">
+                                    <button onClick={() => handleDeleteTask(task.id)} className="task-delete-button">Удалить</button>
+                                    <button onClick={() => handleCompleteTask(task.id)} className="task-completed-button">Выполнено</button>
+                                </div>
+                            </li>
+                        ))}
                 </ul>
             </div>
         </div>

@@ -1,0 +1,68 @@
+﻿/* src/css/Archive.css */
+.archive-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.archive-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.task-list-archieve {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Адаптивные колонки */
+    gap: 20px; /* Расстояние между задачами */
+    width: 100%;
+    max-width: 1200px; /* Максимальная ширина контейнера */
+}
+
+.task-item {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.task-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.task-description {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.task-completed-date {
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.task-delete-button {
+    background-color: var(--delete-button-background-color);
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+    align-self: flex-start; /* Выравнивание кнопки по левому краю */
+}
+
+    .task-delete-button:hover {
+        background-color: var(--delete-button-hover-background-color);
+    }
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}

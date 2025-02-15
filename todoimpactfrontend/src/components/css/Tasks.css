@@ -1,5 +1,6 @@
 ﻿/* css/Tasks.css */
 @import "clean.css";
+/* css/Tasks.css */
 .tasks-container {
     display: flex;
     flex-direction: column;
@@ -60,9 +61,9 @@
 .task-input,
 .task-textarea,
 .task-create-button {
-    width: 100%; /* Устанавливаем ширину 100% */
+    width: 100%;
     margin-bottom: 1rem;
-    box-sizing: border-box; /* Учитываем padding и border в ширину элемента */
+    box-sizing: border-box;
 }
 
 .task-input {
@@ -130,22 +131,28 @@
 .task-item {
     padding: 1rem;
     background-color: var(--card-background-color);
-    border-radius: 0.75rem;
     box-shadow: 0 4px 6px var(--shadow-color);
     margin-bottom: 1rem;
+    max-width: 600px; /* Установите желаемую максимальную ширину */
+}
+
+.task-title,
+.task-description {
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    word-wrap: break-word; /* Или overflow-wrap: break-word; */
 }
 
 .task-title {
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--text-color);
-    margin-bottom: 0.5rem;
 }
 
-.task-description {
-    color: var(--text-color);
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
+.task-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
 }
 
 .task-delete-button {
@@ -162,3 +169,19 @@
     .task-delete-button:hover {
         background-color: var(--delete-button-hover-background-color);
     }
+
+.task-completed-button {
+    background-color: var(--completed-button-background-color);
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 0.875rem;
+}
+
+    .task-completed-button:hover {
+        background-color: var(--completed-button-hover-background-color);
+    }
+

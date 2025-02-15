@@ -32,6 +32,8 @@
     --shadow-color: rgba(0, 0, 0, 0.2);
     --switch-theme-button: #f7fafc;
     --switch-theme-button-text: #1a202c;
+    --completed-button-background-color: green;
+    --completed-button-hover-background-color: #2a9311;
 }
 
 .app-container {
